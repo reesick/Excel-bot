@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: office-bot
+    runtime: python
+    buildCommand: |
+      pip install -r requirements.txt
+      curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+      apt-get install -y nodejs
+      npm install -g pptxgenjs
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: WEBHOOK_SECRET
+        sync: false
+      - key: APP_URL
+        sync: false
+    healthCheckPath: /health
